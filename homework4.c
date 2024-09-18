@@ -5,7 +5,7 @@ int main(void) {
 	for (int i = 0; i < 10; ++i) {
 		for (int k = 0; k < 10; ++k) {
 			for (int j = 0; k < 10; ++j) {
-				++array[i + j + k];
+				++array[i + k + j];
 			}
 		}
 	}
