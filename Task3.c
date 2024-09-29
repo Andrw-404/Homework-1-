@@ -1,48 +1,39 @@
 #include <stdio.h>
-#include <math.h>
+#include <stdbool.h>
 #include <locale.h>
 
-
-int incompleteQuotient(int firstNumber, int secondNumber, int* errorCode) {
-	int counter = 0;
-	if (secondNumber == 0) {
-		*errorCode = 1;
-		return 0;
-	}
-	if ((firstNumber >= 0 && secondNumber > 0) || (firstNumber <= 0 && secondNumber < 0)) {
-		if (abs(firstNumber) < abs(secondNumber)) {
-			*errorCode = 1;
-		}
-		else {
-			while (abs(firstNumber) >= abs(secondNumber)) {
-				firstNumber = firstNumber - secondNumber;
-				counter += 1;
-			}
-		}
-	}
-	else {
-		if (abs(firstNumber) < abs(secondNumber)) {
-			*errorCode = 1;
-		}
-		else {
-			while (abs(firstNumber) >= abs(secondNumber)) {
-				firstNumber += secondNumber;
-				counter += 1;
-			}
-			counter *= (-1);
-		}
-	}
-	return counter;
+bool integerDivision(int dividend, int divisor, int* quotient) {
+    if (divisor == 0) {
+        return false;
+    }
+    *quotient = 0;
+    int sign = (dividend >= 0) == (divisor > 0) ? 1 : -1;
+    int remainder = (dividend >= 0) ? dividend : -dividend;
+    int absoluteDivisor = (divisor > 0) ? divisor : -divisor;
+    while (remainder >= absoluteDivisor) {
+        *quotient += sign;
+        remainder -= absoluteDivisor;
+    }
+    if (sign == 1 && dividend < 0 && divisor < 0 && remainder > 0) {
+        (*quotient)++;
+    }
+    return true;
 }
 
 int main(void) {
-	setlocale(LC_ALL, "Russian");
-	int errorCode = 0;
-	int result = incompleteQuotient(-432, 34, &errorCode);
-	if (errorCode == 1){
-		printf("Ошибка\n");
-	}
-	else {
-		printf("Неполное частное: %d\n", result);
-	}
+    int dividendInput, divisorInput, result = 0;
+    setlocale(LC_ALL, "Russian");
+    printf("Введите делимое: ");
+    scanf_s("%d", &dividendInput);
+    printf("\n");
+    printf("Введите делитель: ");
+    scanf_s("%d", &divisorInput);
+    printf("\n");
+    if (integerDivision(dividendInput, divisorInput, &result)) {
+        printf("Неполное частное: %d\n", result);
+    }
+    else {
+        printf("Ошибка\n");
+    }
+    return 0;
 }
