@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <locale.h>
 
-int Balance(char string[]) {
+bool Balance(const char* string) {
 	int counter = 0;
 	int i = 0;
 	while (string[i] != '\0') {
@@ -13,17 +13,17 @@ int Balance(char string[]) {
 			counter--;
 		}
 		if (counter < 0) {
-			break;
+			return false;
 		}
 		i++;
 	}
-	return counter;
+	return counter == 0;
 }
 
 int main(void) {
 	setlocale(LC_ALL, "Russian");
-	char string[] = { "((()))"};
-	if (Balance(string) == 0) {
+	const char *string = "((()))";
+	if (Balance(string)) {
 		printf("Баланс скобок соблюдён\n\n");
 	}
 	else {
